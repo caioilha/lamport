@@ -15,8 +15,9 @@ class nodo(threading.Thread):
         while True:
             data = self.sock.recvfrom(512)
             msg = data[0].decode('ascii')
-            rcv = data[1]
-            print(msg +'    '+ str(rcv))
+            # rcv = data[1]
+            # print(msg +'    '+ str(rcv))
+            print(msg)
 
 def eventos():
     for i in range(0,100):
@@ -32,6 +33,7 @@ def enviarEvento(idsender, data):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     soma = cont_queue.get()
     cont_queue.put(soma)
+    #              host_destino     soma            id_send
     msg = "s " + str(data[0])+' ' + str(soma) +' '+ str(idsender)
     sock.sendto(msg.encode('ascii'), data)
 
@@ -58,6 +60,3 @@ nodo = nodo(id_host, host, int(port), cont_queue)
 nodo.start()
 
 eventos()
-
-
-

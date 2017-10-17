@@ -15,9 +15,9 @@ class nodo(threading.Thread):
         while True:
             data = self.sock.recvfrom(512)
             msg = data[0].decode('ascii')
+            print(msg)
             # rcv = data[1]
             # print(msg +'    '+ str(rcv))
-            print(msg)
 
 def eventos():
     for i in range(0,100):
@@ -56,7 +56,7 @@ port = nodos[mystuff][2]
 
 cont_queue = Queue(1)
 cont_queue.put(0)
-nodo = nodo(id_host, host, int(port), cont_queue)
+nodo = nodo(id_host, host, int(port), cont_queue) #queue deve ser a msm com todos
 nodo.start()
 
 eventos()

@@ -70,6 +70,7 @@ port = nodos[mystuff][2]
 cont_queue = Queue(1)
 cont_queue.put(0)
 nodo = nodo(id_host, host, int(port), cont_queue) #queue deve ser a msm com todos
+nodo.daemon = True
 nodo.start()
 
 eventos()

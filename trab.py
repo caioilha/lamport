@@ -19,14 +19,12 @@ class nodo(threading.Thread):
             data = self.sock.recvfrom(512)
             msg = data[0].decode('ascii')
             msg = msg.split(' ')
-            # print(msg)
+            
             timestamps = int(round(time.time() * 1000))
             tempo = self.que.get()
             tempo = max(tempo, int(msg[2]))+1
             self.que.put(tempo)
             print(str(timestamps)+' '+self.id+' '+str(tempo)+' r '+str(msg[1])+' '+msg[2])
-            # rcv = data[1]
-            # print(msg +'    '+ str(rcv))
 
 def eventos():
     for i in range(0,100):
@@ -51,7 +49,6 @@ def enviarEvento(idsender, b, data):
     soma = cont_queue.get()
     cont_queue.put(soma)
     timestamps = int(round(time.time() * 1000))
-    #              host_destino     soma            id_send
     msg = str(timestamps)+' '+ str(idsender) +' ' + str(soma) +' s '+ str(b)
     print(msg)
     sock.sendto(msg.encode('ascii'), data)
@@ -75,7 +72,7 @@ port = nodos[mystuff][2]
 
 cont_queue = Queue(1)
 cont_queue.put(0)
-nodo = nodo(id_host, host, int(port), cont_queue) #queue deve ser a msm com todos
+nodo = nodo(id_host, host, int(port), cont_queue)
 nodo.daemon = True
 nodo.start()
 

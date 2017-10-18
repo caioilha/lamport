@@ -22,32 +22,38 @@ class nodo(threading.Thread):
             # print(msg)
             timestamps = int(round(time.time() * 1000))
             tempo = self.que.get()
-            self.que.put(tempo)
             tempo = max(tempo, int(msg[2]))+1
-            print(str(timestamps)+' '+str(tempo)+' r '+str(msg[3])+' '+msg[2])
+            self.que.put(tempo)
+            print(str(timestamps)+' '+self.id+' '+str(tempo)+' r '+str(msg[1])+' '+msg[2])
             # rcv = data[1]
             # print(msg +'    '+ str(rcv))
 
 def eventos():
     for i in range(0,100):
-        # time.sleep(1)
+        time.sleep(0.3)
         soma = cont_queue.get() + 1 
         cont_queue.put(soma)
         if (random.randrange(0,100) > 50):
             timestamps = int(round(time.time() * 1000))
             print(str(timestamps)+' '+id_host+' '+ str(soma) + ' l')
         else:
-            a = nodos[random.randrange(0,len(nodos))]
-            enviarEvento(nodos[mystuff][0],(a[1],a[2]))
+            b = int(id_host)
+            while b == int(id_host):
+                b = random.randrange(0,len(nodos))
+
+            a = nodos[b]
+            enviarEvento(id_host, b, (a[1],a[2]))
     sys.exit(0)
 
 
-def enviarEvento(idsender, data):
+def enviarEvento(idsender, b, data):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     soma = cont_queue.get()
     cont_queue.put(soma)
+    timestamps = int(round(time.time() * 1000))
     #              host_destino     soma            id_send
-    msg = "s " + str(data[0])+' ' + str(soma) +' '+ str(idsender)
+    msg = str(timestamps)+' '+ str(idsender) +' ' + str(soma) +' s '+ str(b)
+    print(msg)
     sock.sendto(msg.encode('ascii'), data)
 
 

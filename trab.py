@@ -4,6 +4,7 @@ import threading
 from queue import Queue
 import sys
 import random
+import time
 
 class nodo(threading.Thread):
     def __init__(self, id, host, port, queue):
@@ -21,12 +22,14 @@ class nodo(threading.Thread):
 
 def eventos():
     for i in range(0,100):
+        time.sleep(1)
         if (random.randrange(0,100) > 50):
             soma = cont_queue.get() + 1 
             cont_queue.put(soma)
         else:
             a = nodos[random.randrange(0,len(nodos))]
             enviarEvento(nodos[mystuff][0],(a[1],a[2]))
+    sys.exit(0)
 
 
 def enviarEvento(idsender, data):

@@ -7,25 +7,35 @@ import random
 import time
 
 class nodo(threading.Thread):
-    def __init__(self, id, host, port, queue):
+    def __init__(self, ids, host, port, queue):
         threading.Thread.__init__(self)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((host,port))
+        self.id = ids
+        self.que = queue
             
     def run(self):
         while True:
             data = self.sock.recvfrom(512)
             msg = data[0].decode('ascii')
-            print(msg)
+            msg = msg.split(' ')
+            # print(msg)
+            timestamps = int(round(time.time() * 1000))
+            tempo = self.que.get()
+            self.que.put(tempo)
+            tempo = max(tempo, int(msg[2]))+1
+            print(str(timestamps)+' '+str(tempo)+' r '+str(msg[3])+' '+msg[2])
             # rcv = data[1]
             # print(msg +'    '+ str(rcv))
 
 def eventos():
     for i in range(0,100):
-        time.sleep(1)
+        # time.sleep(1)
+        soma = cont_queue.get() + 1 
+        cont_queue.put(soma)
         if (random.randrange(0,100) > 50):
-            soma = cont_queue.get() + 1 
-            cont_queue.put(soma)
+            timestamps = int(round(time.time() * 1000))
+            print(str(timestamps)+' '+id_host+' '+ str(soma) + ' l')
         else:
             a = nodos[random.randrange(0,len(nodos))]
             enviarEvento(nodos[mystuff][0],(a[1],a[2]))

@@ -55,7 +55,7 @@ def enviarEvento(idsender, b, data):
 
 
 nodos = []
-with open('config_file.conf', 'r') as r:
+with open('config.txt', 'r') as r:
     lines = r.readlines()
     for line in lines:
         line = line.split(' ')
